@@ -33,6 +33,7 @@ class HCIDetection(Detection):
                         if idx - first < 10:
                             ret = True
                             l.debug("detected vm using mouse human interaction!")
+                            break
                     else:
                         first = idx
         return ret

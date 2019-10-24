@@ -16,9 +16,15 @@ class Runner(object):
             dlist_1 = self.rp.list_droppers()
             dlist_2 = self.ds_r.list_droppers()
             if dlist_1 != dlist_2:
-                l.debug("droppers mismatch...")
+                l.debug("droppers mismatch... {} [{}] != {} [{}]".format(os.path.basename(ds_rpath),
+                                    ', '.join(dlist_2), os.path.basename(rpath),
+                                     ', '.join(dlist_1)))
 
     def detect(self):
+        ret = False
         for heuristic, ccall in names.items():
             if ccall(self.rp).detect():
                 print("detected by the \"%s\" heuristic..."%heuristic)
+                ret = True
+                break
+        return ret

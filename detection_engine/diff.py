@@ -28,6 +28,6 @@ class Differ(object):
                         report_path = os.path.join(d, report_name)
                         ds_report_path = os.path.join(d, ds_report)
                         if os.path.exists(report_path):
-                            print("running analysis on %s..."%report_path)
+                            print("running analysis on %s..."%os.path.basename(report_path))
                             Runner(report_path, ds_report_path).detect()
 

@@ -20,6 +20,26 @@ class ReportParser(object):
     def parse(filename):
         return json.loads(open(filename).read())
 
+    def enumerate_services(self):
+        enum_srv = dict()
+        g_report = self.report['behavior']['generic']
+        for process in g_report:
+            if not process['summary']:
+                continue
+            pname = process['process_name']
+            if 'regkey_opened' not in process['summary'].keys():
+                continue
+            key_opened = process['summary']['regkey_opened']
+            for k in key_opened:
+                if 'CurrentControlSet\\services' in k:
+                    srv_name = ntpath.basename(k)
+                    if pname not in enum_srv.keys():
+                        enum_srv[pname] = []
+                        enum_srv[pname].append(srv_name)
+                    else:
+                        enum_srv[pname].append(srv_name)
+        return enum_srv
+
     def enumerate_processes(self):
         processes = self.report['behavior']['processes']
         for p in processes:
@@ -47,6 +67,10 @@ class ReportParser(object):
                 l.debug('%s -> %s '%(process_name, exe_name))
                 self.dropper.add(exe_name)
         return self.dropper
+
+    def __getitem__(self, key):
+        return self.report[key]
+
 
 class DatasetReportParser(ReportParser):
     def __init__(self, fname):
@@ -77,7 +101,7 @@ class DatasetReportParser(ReportParser):
                     if isexec(write):
                         exe_name = ntpath.basename(write['abs_path'])
                         process_name = ntpath.basename(subject['process']['executable']['filename'])
-                        l.debug('%s -> %s '%(process_name, exe_name))
+                        #l.debug('%s -> %s '%(process_name, exe_name))
                         self.dropper.add(exe_name)
                     else:
                         continue
