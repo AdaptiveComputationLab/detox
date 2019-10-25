@@ -61,4 +61,14 @@ as an example:
     }, 
     ``` 
 
+#### Virtualbox analysis: 
+
+- **process detection**: 
+  I ran the analysis on two different environments with different configurations.
+  1. `hopper1`: win7x86\_conf1 configured for QEMU HDD/DVD artifacts removed +
+     BIOS is almost secure (`dmidecode`) 
+  2. `hopper8`: win7x86\_conf1\_vboxGA running a vulnerable version of
+     Virtualbox including Guest Additions installed, but BIOS data has been
+     modified 
+
 
